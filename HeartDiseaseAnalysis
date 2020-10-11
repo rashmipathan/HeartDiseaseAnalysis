@@ -1,0 +1,284 @@
+1.Import DataFrame
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df =pd.read_csv("C:/Users/user/Downloads/heart.csv")
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+​
+df =pd.read_csv("C:/Users/user/Downloads/heart.csv")
+
+2.Perform Profiling 
+df.head()
+age	sex	cp	trestbps	chol	fbs	restecg	thalach	exang	oldpeak	slope	ca	thal	target
+0	63	1	3	145	233	1	0	150	0	2.3	0	0	1	1
+1	37	1	2	130	250	0	1	187	0	3.5	0	0	2	1
+2	41	0	1	130	204	0	0	172	0	1.4	2	0	2	1
+3	56	1	1	120	236	0	1	178	0	0.8	2	0	2	1
+4	57	0	0	120	354	0	1	163	1	0.6	2	0	2	1
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 303 entries, 0 to 302
+Data columns (total 14 columns):
+age         303 non-null int64
+sex         303 non-null int64
+cp          303 non-null int64
+trestbps    303 non-null int64
+chol        303 non-null int64
+fbs         303 non-null int64
+restecg     303 non-null int64
+thalach     303 non-null int64
+exang       303 non-null int64
+oldpeak     303 non-null float64
+slope       303 non-null int64
+ca          303 non-null int64
+thal        303 non-null int64
+target      303 non-null int64
+dtypes: float64(1), int64(13)
+memory usage: 33.2 KB
+df.describe()
+age	sex	cp	trestbps	chol	fbs	restecg	thalach	exang	oldpeak	slope	ca	thal	target
+count	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000	303.000000
+mean	54.366337	0.683168	0.966997	131.623762	246.264026	0.148515	0.528053	149.646865	0.326733	1.039604	1.399340	0.729373	2.313531	0.544554
+std	9.082101	0.466011	1.032052	17.538143	51.830751	0.356198	0.525860	22.905161	0.469794	1.161075	0.616226	1.022606	0.612277	0.498835
+min	29.000000	0.000000	0.000000	94.000000	126.000000	0.000000	0.000000	71.000000	0.000000	0.000000	0.000000	0.000000	0.000000	0.000000
+25%	47.500000	0.000000	0.000000	120.000000	211.000000	0.000000	0.000000	133.500000	0.000000	0.000000	1.000000	0.000000	2.000000	0.000000
+50%	55.000000	1.000000	1.000000	130.000000	240.000000	0.000000	1.000000	153.000000	0.000000	0.800000	1.000000	0.000000	2.000000	1.000000
+75%	61.000000	1.000000	2.000000	140.000000	274.500000	0.000000	1.000000	166.000000	1.000000	1.600000	2.000000	1.000000	3.000000	1.000000
+max	77.000000	1.000000	3.000000	200.000000	564.000000	1.000000	2.000000	202.000000	1.000000	6.200000	2.000000	4.000000	3.000000	1.000000
+df.shape
+(303, 14)
+df.isna().sum()
+age         0
+sex         0
+cp          0
+trestbps    0
+chol        0
+fbs         0
+restecg     0
+thalach     0
+exang       0
+oldpeak     0
+slope       0
+ca          0
+thal        0
+target      0
+dtype: int64
+df.columns
+Index(['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach',
+       'exang', 'oldpeak', 'slope', 'ca', 'thal', 'target'],
+      dtype='object')
+df['target'].value_counts()
+1    165
+0    138
+Name: target, dtype: int64
+
+
+3. EDA
+df['target'].plot.hist()
+<matplotlib.axes._subplots.AxesSubplot at 0x2663a55b588>
+
+df['sex'].plot.hist()
+<matplotlib.axes._subplots.AxesSubplot at 0x2663a8160f0>
+
+sns.countplot(x="target", hue="sex", data=df)
+<matplotlib.axes._subplots.AxesSubplot at 0x2663a91e6d8>
+
+sns.barplot(x="target", y="age", data=df)
+<matplotlib.axes._subplots.AxesSubplot at 0x2663a996390>
+
+sns.countplot(x="target", hue="cp", data=df)
+<matplotlib.axes._subplots.AxesSubplot at 0x2663aa02c50>
+
+  sns.heatmap(df.corr(), annot=True,fmt='.1g')
+<matplotlib.axes._subplots.AxesSubplot at 0x2663acf42e8>
+
+sns.factorplot('age',kind='count',hue='target',data=df)
+<seaborn.axisgrid.FacetGrid at 0x2663b0f4630>
+
+df.head()
+age	sex	cp	trestbps	chol	fbs	restecg	thalach	exang	oldpeak	slope	ca	thal	target
+0	63	1	3	145	233	1	0	150	0	2.3	0	0	1	1
+1	37	1	2	130	250	0	1	187	0	3.5	0	0	2	1
+2	41	0	1	130	204	0	0	172	0	1.4	2	0	2	1
+3	56	1	1	120	236	0	1	178	0	0.8	2	0	2	1
+4	57	0	0	120	354	0	1	163	1	0.6	2	0	2	1
+df['sex']=df['sex'].map({1:'Male',0:'Female'})
+df['cp']=df['cp'].map({0:'asymptomatic',1:'cp_atypical_angina',2:'cp_non_anginal_pain',3:'cp_typicalangina'}) 
+df['restecg']=df['restecg'].map({0:'restecg_ventricular_hypertrophy',1:'restecg_normal',2:'restecg_ST_t_wave abnormality'})
+df['slope']=df['slope'].map({0:'slope_downsloping',1:'slope_flat',2:'slope_upsloping'})
+df['thal']=df['thal'].map({1:'thal_fixed_defect',2:'thal_normal',3:'thal_reversable_defect'})
+df.head()
+age	sex	cp	trestbps	chol	fbs	restecg	thalach	exang	oldpeak	...	restecg_restecg_normal	restecg_restecg_ventricular_hypertrophy	sex_Female	sex_Male	slope_slope_downsloping	slope_slope_flat	slope_slope_upsloping	thal_thal_fixed_defect	thal_thal_normal	thal_thal_reversable_defect
+0	63	Male	cp_typicalangina	145	233	1	restecg_ventricular_hypertrophy	150	0	2.3	...	0	1	0	1	1	0	0	1	0	0
+1	37	Male	cp_non_anginal_pain	130	250	0	restecg_normal	187	0	3.5	...	1	0	0	1	1	0	0	0	1	0
+2	41	Female	cp_atypical_angina	130	204	0	restecg_ventricular_hypertrophy	172	0	1.4	...	0	1	1	0	0	0	1	0	1	0
+3	56	Male	cp_atypical_angina	120	236	0	restecg_normal	178	0	0.8	...	1	0	0	1	0	0	1	0	1	0
+4	57	Female	asymptomatic	120	354	0	restecg_normal	163	1	0.6	...	1	0	1	0	0	0	1	0	1	0
+5 rows × 29 columns
+
+dummy=pd.get_dummies(df[['cp', 'restecg','sex', 'slope', 'thal']])
+dummy.head()
+cp_asymptomatic	cp_cp_atypical_angina	cp_cp_non_anginal_pain	cp_cp_typicalangina	restecg_restecg_ST_t_wave abnormality	restecg_restecg_normal	restecg_restecg_ventricular_hypertrophy	sex_Female	sex_Male	slope_slope_downsloping	slope_slope_flat	slope_slope_upsloping	thal_thal_fixed_defect	thal_thal_normal	thal_thal_reversable_defect
+0	0	0	0	1	0	0	1	0	1	1	0	0	1	0	0
+1	0	0	1	0	0	1	0	0	1	1	0	0	0	1	0
+2	0	1	0	0	0	0	1	1	0	0	0	1	0	1	0
+3	0	1	0	0	0	1	0	0	1	0	0	1	0	1	0
+4	1	0	0	0	0	1	0	1	0	0	0	1	0	1	0
+df=df.join(dummy, how='left')
+df.head()
+age	sex	cp	trestbps	chol	fbs	restecg	thalach	exang	oldpeak	...	restecg_restecg_normal	restecg_restecg_ventricular_hypertrophy	sex_Female	sex_Male	slope_slope_downsloping	slope_slope_flat	slope_slope_upsloping	thal_thal_fixed_defect	thal_thal_normal	thal_thal_reversable_defect
+0	63	Male	cp_typicalangina	145	233	1	restecg_ventricular_hypertrophy	150	0	2.3	...	0	1	0	1	1	0	0	1	0	0
+1	37	Male	cp_non_anginal_pain	130	250	0	restecg_normal	187	0	3.5	...	1	0	0	1	1	0	0	0	1	0
+2	41	Female	cp_atypical_angina	130	204	0	restecg_ventricular_hypertrophy	172	0	1.4	...	0	1	1	0	0	0	1	0	1	0
+3	56	Male	cp_atypical_angina	120	236	0	restecg_normal	178	0	0.8	...	1	0	0	1	0	0	1	0	1	0
+4	57	Female	asymptomatic	120	354	0	restecg_normal	163	1	0.6	...	1	0	1	0	0	0	1	0	1	0
+5 rows × 29 columns
+
+df=df.drop(columns=['cp', 'restecg','sex','slope', 'thal'],axis=1)
+df.head()
+age	trestbps	chol	fbs	thalach	exang	oldpeak	ca	target	cp_asymptomatic	...	restecg_restecg_normal	restecg_restecg_ventricular_hypertrophy	sex_Female	sex_Male	slope_slope_downsloping	slope_slope_flat	slope_slope_upsloping	thal_thal_fixed_defect	thal_thal_normal	thal_thal_reversable_defect
+0	63	145	233	1	150	0	2.3	0	1	0	...	0	1	0	1	1	0	0	1	0	0
+1	37	130	250	0	187	0	3.5	0	1	0	...	1	0	0	1	1	0	0	0	1	0
+2	41	130	204	0	172	0	1.4	0	1	0	...	0	1	1	0	0	0	1	0	1	0
+3	56	120	236	0	178	0	0.8	0	1	0	...	1	0	0	1	0	0	1	0	1	0
+4	57	120	354	0	163	1	0.6	0	1	1	...	1	0	1	0	0	0	1	0	1	0
+5 rows × 24 columns
+
+df=df.drop_duplicates()
+df.corr()
+age	trestbps	chol	fbs	thalach	exang	oldpeak	ca	target	cp_asymptomatic	...	restecg_restecg_normal	restecg_restecg_ventricular_hypertrophy	sex_Female	sex_Male	slope_slope_downsloping	slope_slope_flat	slope_slope_upsloping	thal_thal_fixed_defect	thal_thal_normal	thal_thal_reversable_defect
+age	1.000000	0.283121	0.207216	0.119492	-0.395235	0.093216	0.206040	0.302261	-0.221476	0.133521	...	-0.155794	0.136547	0.094962	-0.094962	0.029066	0.172841	-0.187581	0.062601	-0.131350	0.106699
+trestbps	0.283121	1.000000	0.125256	0.178125	-0.048023	0.068526	0.194600	0.099248	-0.146269	0.022626	...	-0.148054	0.134660	0.057647	-0.057647	0.122755	0.026368	-0.088942	0.076697	-0.142033	0.110668
+chol	0.207216	0.125256	1.000000	0.011428	-0.005308	0.064099	0.050086	0.086878	-0.081437	0.066681	...	-0.170665	0.162904	0.195571	-0.195571	-0.046737	0.047166	-0.023315	-0.095015	-0.000451	0.056239
+fbs	0.119492	0.178125	0.011428	1.000000	-0.007169	0.024729	0.004514	0.144935	-0.026826	-0.061606	...	-0.065092	0.076203	-0.046022	0.046022	0.104950	-0.034701	-0.018824	0.091039	-0.085659	0.029896
+thalach	-0.395235	-0.048023	-0.005308	-0.007169	1.000000	-0.377411	-0.342201	-0.228311	0.419955	-0.374565	...	0.098474	-0.070903	0.046439	-0.046439	-0.055771	-0.417808	0.446050	-0.159190	0.292634	-0.213326
+exang	0.093216	0.068526	0.064099	0.024729	-0.377411	1.000000	0.286766	0.125377	-0.435601	0.467949	...	-0.091702	0.082014	-0.143460	0.143460	0.058678	0.256119	-0.285917	0.062550	-0.327154	0.298946
+oldpeak	0.206040	0.194600	0.050086	0.004514	-0.342201	0.286766	1.000000	0.236560	-0.429146	0.278218	...	-0.135931	0.097540	-0.098322	0.098322	0.394016	0.309085	-0.509830	0.104038	-0.337298	0.300503
+ca	0.302261	0.099248	0.086878	0.144935	-0.228311	0.125377	0.236560	1.000000	-0.408992	0.232580	...	-0.102130	0.094745	-0.113060	0.113060	-0.040014	0.154621	-0.134148	0.070500	-0.235317	0.215936
+target	-0.221476	-0.146269	-0.081437	-0.026826	0.419955	-0.435601	-0.429146	-0.408992	1.000000	-0.514626	...	0.172827	-0.157299	0.283609	-0.283609	-0.062822	-0.360258	0.392121	-0.105986	0.526030	-0.484887
+cp_asymptomatic	0.133521	0.022626	0.066681	-0.061606	-0.374565	0.467949	0.278218	0.232580	-0.514626	1.000000	...	-0.126005	0.111375	-0.091960	0.091960	0.027540	0.235507	-0.249439	0.097393	-0.348067	0.307650
+cp_cp_atypical_angina	-0.150921	-0.081359	-0.014828	-0.061302	0.250335	-0.235154	-0.279297	-0.132310	0.247649	-0.422429	...	0.106904	-0.095138	0.040290	-0.040290	-0.051723	-0.199708	0.225987	-0.036882	0.209046	-0.189652
+cp_cp_non_anginal_pain	-0.050494	-0.047212	-0.030957	0.086238	0.161088	-0.268716	-0.128464	-0.108001	0.313696	-0.598400	...	0.088045	-0.086035	0.120731	-0.120731	-0.028272	-0.101044	0.115412	-0.096872	0.206522	-0.170458
+cp_cp_typicalangina	0.046059	0.151743	-0.052067	0.055138	0.080200	-0.094134	0.086235	-0.068641	0.087959	-0.272290	...	-0.062417	0.070048	-0.088770	0.088770	0.068740	0.008455	-0.043498	0.033174	0.010877	-0.023334
+restecg_restecg_ST_t_wave abnormality	0.084388	0.058789	0.034196	-0.048480	-0.120690	0.042497	0.168056	0.032444	-0.068156	0.064157	...	-0.115857	-0.112827	0.107514	-0.107514	0.082197	0.066545	-0.108422	0.093174	-0.010788	-0.032681
+restecg_restecg_normal	-0.155794	-0.148054	-0.170665	-0.065092	0.098474	-0.091702	-0.135931	-0.102130	0.172827	-0.126005	...	1.000000	-0.973852	0.014222	-0.014222	-0.065089	-0.119523	0.152653	-0.055945	0.033256	-0.006797
+restecg_restecg_ventricular_hypertrophy	0.136547	0.134660	0.162904	0.076203	-0.070903	0.082014	0.097540	0.094745	-0.157299	0.111375	...	-0.973852	1.000000	-0.038818	0.038818	0.046311	0.104344	-0.127908	0.034654	-0.030800	0.014274
+sex_Female	0.094962	0.057647	0.195571	-0.046022	0.046439	-0.143460	-0.098322	-0.113060	0.283609	-0.091960	...	0.014222	-0.038818	1.000000	-1.000000	-0.046840	0.007083	0.016802	-0.141826	0.379223	-0.323934
+sex_Male	-0.094962	-0.057647	-0.195571	0.046022	-0.046439	0.143460	0.098322	0.113060	-0.283609	0.091960	...	-0.014222	0.038818	-1.000000	1.000000	0.046840	-0.007083	-0.016802	0.141826	-0.379223	0.323934
+slope_slope_downsloping	0.029066	0.122755	-0.046737	0.104950	-0.055771	0.058678	0.394016	-0.040014	-0.062822	0.027540	...	-0.065089	0.046311	-0.046840	0.046840	1.000000	-0.254134	-0.255831	0.096134	-0.090826	0.049816
+slope_slope_flat	0.172841	0.026368	0.047166	-0.034701	-0.417808	0.256119	0.309085	0.154621	-0.360258	0.235507	...	-0.119523	0.104344	0.007083	-0.007083	-0.254134	1.000000	-0.869968	0.130578	-0.273292	0.214836
+slope_slope_upsloping	-0.187581	-0.088942	-0.023315	-0.018824	0.446050	-0.285917	-0.509830	-0.134148	0.392121	-0.249439	...	0.152653	-0.127908	0.016802	-0.016802	-0.255831	-0.869968	1.000000	-0.179531	0.319473	-0.240135
+thal_thal_fixed_defect	0.062601	0.076697	-0.095015	0.091039	-0.159190	0.062550	0.104038	0.070500	-0.105986	0.097393	...	-0.055945	0.034654	-0.141826	0.141826	0.096134	0.130578	-0.179531	1.000000	-0.276286	-0.200209
+thal_thal_normal	-0.131350	-0.142033	-0.000451	-0.085659	0.292634	-0.327154	-0.337298	-0.235317	0.526030	-0.348067	...	0.033256	-0.030800	0.379223	-0.379223	-0.090826	-0.273292	0.319473	-0.276286	1.000000	-0.872748
+thal_thal_reversable_defect	0.106699	0.110668	0.056239	0.029896	-0.213326	0.298946	0.300503	0.215936	-0.484887	0.307650	...	-0.006797	0.014274	-0.323934	0.323934	0.049816	0.214836	-0.240135	-0.200209	-0.872748	1.000000
+24 rows × 24 columns
+
+4. Data -> Training and Testing Dataset
+x=df.drop('target',axis=1)
+y=df['target']
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=1)
+5.Create Model on Training Set and Make predictions on testing set
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+knn=KNeighborsClassifier()
+knn.fit(x_train,y_train)
+knn_pred=knn.predict(x_test)
+print("Accuracy Score for KNN Algorithm",accuracy_score(y_test,knn_pred))
+Accuracy Score for KNN Algorithm 0.6373626373626373
+rndf=RandomForestClassifier()
+rndf.fit(x_train,y_train)
+rndf_pred=rndf.predict(x_test)
+print("Accuracy Score for Random Forest Algorithm",accuracy_score(y_test,rndf_pred))
+Accuracy Score for Random Forest Algorithm 0.7582417582417582
+lr=LogisticRegression()
+lr.fit(x_train,y_train)
+lr_pred=lr.predict(x_test)
+print("Accuracy score for Logistic Regression",accuracy_score(y_test,lr_pred))
+Accuracy score for Logistic Regression 0.8021978021978022
+dt=DecisionTreeClassifier()
+dt.fit(x_train,y_train)
+dt_pred=dt.predict(x_test)
+print("Accuracy_score for Decision Tree Algorithm",accuracy_score(y_test,dt_pred))
+Accuracy_score for Decision Tree Algorithm 0.7142857142857143
+
+
+6.Compare predicted and achived results 
+y_test
+174    0
+88     1
+163    1
+243    0
+110    1
+132    1
+193    0
+154    1
+278    0
+29     1
+228    0
+51     1
+229    0
+59     1
+127    1
+120    1
+11     1
+171    0
+213    0
+73     1
+27     1
+85     1
+123    1
+80     1
+12     1
+180    0
+18     1
+168    0
+192    0
+108    1
+      ..
+161    1
+105    1
+119    1
+244    0
+117    1
+295    0
+39     1
+300    0
+89     1
+257    0
+285    0
+17     1
+178    0
+150    1
+182    0
+42     1
+147    1
+131    1
+106    1
+5      1
+90     1
+38     1
+291    0
+102    1
+67     1
+95     1
+111    1
+34     1
+185    0
+139    1
+Name: target, Length: 91, dtype: int64
+lr_pred
+array([0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+       1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+       1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1,
+       0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1,
+       0, 0, 0], dtype=int64)
+​
